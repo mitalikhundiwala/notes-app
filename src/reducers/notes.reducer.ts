@@ -20,6 +20,30 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
                 ...newSlice,
             };
         }
+        case NotesAction.UPDATE_NOTE: {
+            const note: Note = action.payload;
+
+            const updatedSlice = {
+                [note.noteId]: {
+                    ...state[action.payload.noteId],
+                    title: action.payload.title,
+                    detail: action.payload.detail,
+                },
+            };
+
+            return {
+                ...state,
+                ...updatedSlice,
+            };
+        }
+        case NotesAction.REMOVE_NOTE: {
+            const payload: { noteId: number } = action.payload;
+            const notes = {
+                ...state,
+            };
+            delete notes[payload.noteId];
+            return notes;
+        }
         default:
             return state;
     }
