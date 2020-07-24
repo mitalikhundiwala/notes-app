@@ -8,10 +8,12 @@ import {
 } from 'redux';
 
 import notesReducer, { IState as INotesState } from '../reducers/notes.reducer';
+import uiReducer, { IState as IUIState } from '../reducers/ui.reducer';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 
 export interface IAppState {
     notes: INotesState;
+    ui: IUIState;
 }
 export type AppThunkDispatch = ThunkDispatch<IAppState, undefined, AnyAction>;
 
@@ -20,6 +22,7 @@ const composeEnhancers =
 
 const combinedReducers: Reducer<IAppState> = combineReducers({
     notes: notesReducer,
+    ui: uiReducer,
 });
 
 export default () => {

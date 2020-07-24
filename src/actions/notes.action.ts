@@ -6,14 +6,17 @@ import NoteService from '../services/notes.service';
 
 export enum NotesAction {
     ADD_NOTE = 'ADD_NOTE',
+    SELECT_NOTE = 'SELECT_NOTE',
 }
 
-export const addNoteSuccess = (note: Note) => ({
-    type: NotesAction.ADD_NOTE,
-    payload: {
-        ...note,
-    },
-});
+export const addNoteSuccess = (note: Note): AnyAction => {
+    return {
+        type: NotesAction.ADD_NOTE,
+        payload: {
+            ...note,
+        },
+    };
+};
 
 export const addNote = (
     title: string,
@@ -23,5 +26,14 @@ export const addNote = (
         const note = await NoteService.addNote(title, detail);
         dispatch(addNoteSuccess(note));
         return note;
+    };
+};
+
+export const selectNote = (noteId: number): AnyAction => {
+    return {
+        type: NotesAction.SELECT_NOTE,
+        payload: {
+            noteId,
+        },
     };
 };

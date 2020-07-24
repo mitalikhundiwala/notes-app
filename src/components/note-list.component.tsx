@@ -6,19 +6,30 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import Note from '../models/note.model';
 import { connect } from 'react-redux';
-import { IAppState } from '../store';
-import { getNotesSelector } from '../selectors/notes.selector';
+import { IAppState, AppThunkDispatch } from '../store';
+import { getNotesSelector, getSelectedNote } from '../selectors/notes.selector';
+import { selectNote } from '../actions/notes.action';
 
 interface IProps {
     notes: Note[];
+    selectedNote: Note | null;
+    selectNote: (noteId: number) => void;
 }
 
-const NoteList: FunctionComponent<IProps> = ({ notes }) => {
+const NoteList: FunctionComponent<IProps> = ({
+    notes,
+    selectedNote,
+    selectNote,
+}) => {
     return (
         <List>
             {notes.map((note: Note) => {
                 return (
-                    <ListItem key={note.noteId}>
+                    <ListItem
+                        key={note.noteId}
+                        selected={note.noteId === selectedNote?.noteId}
+                        onClick={() => selectNote(note.noteId)}
+                    >
                         <ListItemText
                             primary={note.title}
                             secondary={note.detail}
@@ -32,9 +43,19 @@ const NoteList: FunctionComponent<IProps> = ({ notes }) => {
 
 const mapStateToProps = (state: IAppState) => {
     const notes: Note[] = getNotesSelector(state);
+    const selectedNote = getSelectedNote(state);
     return {
-        notes: notes,
+        selectedNote,
+        notes,
     };
 };
 
-export default connect(mapStateToProps)(NoteList);
+const mapDispatchToProps = (dispatch: AppThunkDispatch) => {
+    return {
+        selectNote: (noteId: number) => {
+            return dispatch(selectNote(noteId));
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NoteList);
