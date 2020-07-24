@@ -8,6 +8,18 @@ const defaultState: IState = {};
 
 export default (state: IState = defaultState, action: AnyAction): IState => {
     switch (action.type) {
+        case NotesAction.ADD_NOTE: {
+            const note: Note = action.payload;
+
+            const newSlice = {
+                [note.noteId]: note,
+            };
+
+            return {
+                ...state,
+                ...newSlice,
+            };
+        }
         default:
             return state;
     }

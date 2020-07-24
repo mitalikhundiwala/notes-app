@@ -1,9 +1,17 @@
 import React, { FunctionComponent, createRef } from 'react';
 import { FormikProps } from 'formik';
-import { TextField, Button, Grid } from '@material-ui/core';
+import { TextField, Button, Grid, CircularProgress } from '@material-ui/core';
 
-const NoteEditor: FunctionComponent<FormikProps<IFormValues>> = props => {
-    // console.log(props);
+export interface IFormValues {
+    title: string;
+    detail: string;
+}
+
+interface IProps extends FormikProps<IFormValues> {
+    onCancel: () => void;
+}
+
+const NoteEditor: FunctionComponent<IProps> = props => {
     return (
         <form noValidate onSubmit={props.handleSubmit}>
             <Grid container spacing={3}>
@@ -35,18 +43,32 @@ const NoteEditor: FunctionComponent<FormikProps<IFormValues>> = props => {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Button variant="contained" color="primary" type="submit">
-                        Submit
-                    </Button>
+                    <Grid container>
+                        <Grid item xs={3}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                                fullWidth
+                                disabled={props.isSubmitting}
+                            >
+                                {props.isSubmitting ? 'Saving...' : 'Save'}
+                            </Button>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Button
+                                fullWidth
+                                onClick={props.onCancel}
+                                disabled={props.isSubmitting}
+                            >
+                                Cancel
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         </form>
     );
 };
-
-export interface IFormValues {
-    title: string;
-    detail: string;
-}
 
 export default NoteEditor;
