@@ -12,6 +12,7 @@ interface IProps extends FormikProps<IFormValues> {
 }
 
 const NoteEditor: FunctionComponent<IProps> = props => {
+    console.log(props);
     return (
         <form noValidate onSubmit={props.handleSubmit}>
             <Grid container spacing={3}>
@@ -26,6 +27,7 @@ const NoteEditor: FunctionComponent<IProps> = props => {
                         variant="outlined"
                         onChange={props.handleChange}
                         onBlur={props.handleBlur}
+                        defaultValue={props.values.title}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -40,6 +42,7 @@ const NoteEditor: FunctionComponent<IProps> = props => {
                         variant="outlined"
                         onChange={props.handleChange}
                         onBlur={props.handleBlur}
+                        defaultValue={props.values.detail}
                     />
                 </Grid>
                 <Grid item xs={12}>

@@ -16,7 +16,12 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
                 ...state,
                 selectedNoteId: action.payload.noteId,
             };
-
+        case NotesAction.REMOVE_NOTE: {
+            return {
+                ...state,
+                selectedNoteId: null,
+            };
+        }
         default:
             return state;
     }
