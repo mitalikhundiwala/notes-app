@@ -10,6 +10,7 @@ import {
 import notesReducer, { IState as INotesState } from '../reducers/notes.reducer';
 import uiReducer, { IState as IUIState } from '../reducers/ui.reducer';
 import thunk, { ThunkDispatch } from 'redux-thunk';
+import LocalStorageService from '../services/local-storage.service';
 
 export interface IAppState {
     notes: INotesState;
@@ -28,6 +29,7 @@ const combinedReducers: Reducer<IAppState> = combineReducers({
 export default () => {
     const store = createStore(
         combinedReducers,
+        LocalStorageService.loadState(),
         composeEnhancers(applyMiddleware(thunk))
     );
 
