@@ -12,16 +12,14 @@ export default class LocalStorageService {
         }
     }
 
-    static loadState(): {
-        notes: { [key: string]: any };
-    } {
+    static loadState(): any {
         try {
             const serializedState = localStorage.getItem('note-app');
             if (serializedState === null) {
                 return {};
             }
             const parsedState = JSON.parse(serializedState);
-            console.log(parsedState);
+
             return {
                 ...parsedState,
             };
