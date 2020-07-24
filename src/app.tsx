@@ -1,11 +1,9 @@
 import React, { FunctionComponent } from 'react';
-import NoteList from './components/note-list.component';
-import Note from './models/note.model';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Note from './models/note.model';
+import NoteList from './components/note-list.component';
+import Header from './components/header.component';
 
 const App: FunctionComponent = () => {
     const notes: Note[] = [
@@ -39,11 +37,7 @@ const App: FunctionComponent = () => {
 
     return (
         <>
-            <AppBar position="fixed">
-                <Toolbar>
-                    <Typography variant="h6">Notes</Typography>
-                </Toolbar>
-            </AppBar>
+            <Header />
             <Container>
                 <Box mt={8}>
                     <NoteList notes={notes}></NoteList>
