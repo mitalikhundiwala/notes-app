@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState, useCallback } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -9,11 +9,9 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import CreateNote from './note-create.component';
 
 const Header: FunctionComponent = () => {
-    const [state, setState] = React.useState({
-        right: false,
-    });
+    const [isOpen, setIsOpen] = useState(false);
 
-    const toggleDrawer = (anchor: string, open: boolean) => (
+    const toggleDrawer = (open: boolean) => (
         event: React.KeyboardEvent | React.MouseEvent
     ) => {
         if (
@@ -25,8 +23,17 @@ const Header: FunctionComponent = () => {
             return;
         }
 
-        setState({ ...state, [anchor]: open });
+        setIsOpen(open);
     };
+
+    const handleCancel = useCallback(() => {
+        setIsOpen(false);
+    }, []);
+
+    const onToggle = useCallback(() => {
+        return;
+    }, []);
+
     return (
         <>
             <AppBar position="fixed">
@@ -37,7 +44,7 @@ const Header: FunctionComponent = () => {
                         aria-controls="primary-search-account-menu"
                         aria-haspopup="true"
                         color="inherit"
-                        onClick={toggleDrawer('right', !state['right'])}
+                        onClick={toggleDrawer(true)}
                     >
                         <PostAdd />
                     </IconButton>
@@ -45,11 +52,11 @@ const Header: FunctionComponent = () => {
             </AppBar>
             <SwipeableDrawer
                 anchor="right"
-                open={state['right']}
-                onClose={toggleDrawer('right', false)}
-                onOpen={toggleDrawer('right', true)}
+                open={isOpen}
+                onClose={onToggle}
+                onOpen={onToggle}
             >
-                <CreateNote></CreateNote>
+                <CreateNote handleCancel={handleCancel}></CreateNote>
             </SwipeableDrawer>
         </>
     );
