@@ -6,10 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import PostAdd from '@material-ui/icons/PostAdd';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import CreateNote from './note-create.component';
 
 const Header: FunctionComponent = () => {
     const [state, setState] = React.useState({
-        bottom: false,
+        right: false,
     });
 
     const toggleDrawer = (anchor: string, open: boolean) => (
@@ -36,19 +37,19 @@ const Header: FunctionComponent = () => {
                         aria-controls="primary-search-account-menu"
                         aria-haspopup="true"
                         color="inherit"
-                        onClick={toggleDrawer('bottom', !state['bottom'])}
+                        onClick={toggleDrawer('right', !state['right'])}
                     >
                         <PostAdd />
                     </IconButton>
                 </Toolbar>
             </AppBar>
             <SwipeableDrawer
-                anchor="bottom"
-                open={state['bottom']}
-                onClose={toggleDrawer('bottom', false)}
-                onOpen={toggleDrawer('bottom', true)}
+                anchor="right"
+                open={state['right']}
+                onClose={toggleDrawer('right', false)}
+                onOpen={toggleDrawer('right', true)}
             >
-                Hello
+                <CreateNote></CreateNote>
             </SwipeableDrawer>
         </>
     );

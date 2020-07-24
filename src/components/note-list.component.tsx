@@ -18,7 +18,7 @@ const NoteList: FunctionComponent<IProps> = ({ notes }) => {
                     <ListItem key={note.noteId}>
                         <ListItemText
                             primary={note.title}
-                            secondary={note.description}
+                            secondary={note.detail}
                         ></ListItemText>
                     </ListItem>
                 );
