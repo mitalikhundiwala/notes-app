@@ -1,17 +1,17 @@
-import { createStore, combineReducers, Reducer } from "redux";
+import { createStore, combineReducers, Reducer } from 'redux';
 
-import notesReducer, { IState as INotesState } from "../reducers/notes.reducer";
+import notesReducer, { IState as INotesState } from '../reducers/notes.reducer';
 
 export interface IAppState {
-  notes: INotesState;
+    notes: INotesState;
 }
 
 const combinedReducers: Reducer<IAppState> = combineReducers({
-  notes: notesReducer,
+    notes: notesReducer,
 });
 
 export default () => {
-  const store = createStore(combinedReducers);
+    const store = createStore(combinedReducers);
 
-  return store;
+    return store;
 };
