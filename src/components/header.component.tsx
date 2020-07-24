@@ -26,7 +26,7 @@ const Header: FunctionComponent = () => {
         setIsOpen(open);
     };
 
-    const handleCancel = useCallback(() => {
+    const closeDrawer = useCallback(() => {
         setIsOpen(false);
     }, []);
 
@@ -56,7 +56,10 @@ const Header: FunctionComponent = () => {
                 onClose={onToggle}
                 onOpen={onToggle}
             >
-                <CreateNote handleCancel={handleCancel}></CreateNote>
+                <CreateNote
+                    onCancel={closeDrawer}
+                    onCreate={closeDrawer}
+                ></CreateNote>
             </SwipeableDrawer>
         </>
     );

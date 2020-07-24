@@ -9,7 +9,7 @@ class NoteService {
         return new Note({
             noteId,
             title,
-            description: detail,
+            detail,
         });
     }
 }

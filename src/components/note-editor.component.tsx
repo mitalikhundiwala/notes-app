@@ -1,6 +1,6 @@
 import React, { FunctionComponent, createRef } from 'react';
 import { FormikProps } from 'formik';
-import { TextField, Button, Grid } from '@material-ui/core';
+import { TextField, Button, Grid, CircularProgress } from '@material-ui/core';
 
 export interface IFormValues {
     title: string;
@@ -8,7 +8,7 @@ export interface IFormValues {
 }
 
 interface IProps extends FormikProps<IFormValues> {
-    handleCancel: () => void;
+    onCancel: () => void;
 }
 
 const NoteEditor: FunctionComponent<IProps> = props => {
@@ -50,12 +50,17 @@ const NoteEditor: FunctionComponent<IProps> = props => {
                                 color="primary"
                                 type="submit"
                                 fullWidth
+                                disabled={props.isSubmitting}
                             >
-                                Submit
+                                {props.isSubmitting ? 'Saving...' : 'Save'}
                             </Button>
                         </Grid>
                         <Grid item xs={3}>
-                            <Button fullWidth onClick={props.handleCancel}>
+                            <Button
+                                fullWidth
+                                onClick={props.onCancel}
+                                disabled={props.isSubmitting}
+                            >
                                 Cancel
                             </Button>
                         </Grid>

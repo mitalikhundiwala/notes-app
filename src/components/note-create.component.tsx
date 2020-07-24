@@ -12,10 +12,15 @@ interface IOwnProps {
 }
 
 interface IProps extends IOwnProps {
-    handleCancel: () => void;
+    onCreate: () => void;
+    onCancel: () => void;
 }
 
-const CreateNote: FunctionComponent<IProps> = ({ addNote, handleCancel }) => {
+const CreateNote: FunctionComponent<IProps> = ({
+    addNote,
+    onCreate,
+    onCancel,
+}) => {
     return (
         <Box p={2}>
             <Formik
@@ -30,13 +35,16 @@ const CreateNote: FunctionComponent<IProps> = ({ addNote, handleCancel }) => {
                     }
                     return errors;
                 }}
-                onSubmit={(values, actions) => {
+                onSubmit={async (values, actions) => {
+                    actions.setSubmitting(true);
                     const title = values.title?.trim();
                     const detail = values.detail?.trim();
-                    addNote(title, detail);
+                    await addNote(title, detail);
+                    actions.setSubmitting(false);
+                    onCreate();
                 }}
             >
-                {props => <NoteEditor {...props} handleCancel={handleCancel} />}
+                {props => <NoteEditor {...props} onCancel={onCancel} />}
             </Formik>
         </Box>
     );

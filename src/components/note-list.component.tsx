@@ -5,6 +5,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import Note from '../models/note.model';
+import { connect } from 'react-redux';
+import { IAppState } from '../store';
+import { getNotesSelector } from '../selectors/notes.selector';
 
 interface IProps {
     notes: Note[];
@@ -27,4 +30,11 @@ const NoteList: FunctionComponent<IProps> = ({ notes }) => {
     );
 };
 
-export default NoteList;
+const mapStateToProps = (state: IAppState) => {
+    const notes: Note[] = getNotesSelector(state);
+    return {
+        notes: notes,
+    };
+};
+
+export default connect(mapStateToProps)(NoteList);
