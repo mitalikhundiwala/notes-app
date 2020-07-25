@@ -2,7 +2,7 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
 import Note from '../models/note.model';
 import { connect } from 'react-redux';
-import { Typography, SwipeableDrawer } from '@material-ui/core';
+import { Typography, SwipeableDrawer, Chip, Box } from '@material-ui/core';
 import { Grid, IconButton } from '@material-ui/core';
 import Create from '@material-ui/icons/Create';
 import Delete from '@material-ui/icons/Delete';
@@ -73,9 +73,17 @@ const NoteDetail: FunctionComponent<IProps> = ({
             <Typography variant="h5" gutterBottom>
                 {selectedNote.title}
             </Typography>
+
+            {selectedNote.tags.map(tag => (
+                <Box key={tag} display="inline-block" marginRight={1}>
+                    <Chip label={tag} />
+                </Box>
+            ))}
+
             <Typography variant="body2" gutterBottom>
                 {selectedNote.detail}
             </Typography>
+
             <SwipeableDrawer
                 anchor="right"
                 open={isOpen}

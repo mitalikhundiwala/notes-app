@@ -7,7 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Note from '../models/note.model';
 import { connect } from 'react-redux';
 import { IAppState, AppThunkDispatch } from '../store';
-import { getNotesSelector, getSelectedNote } from '../selectors/notes.selector';
+import { getNotesSelector, getSelectedNote, getMatchingNotes } from '../selectors/notes.selector';
 import { selectNote } from '../actions/notes.action';
 
 interface IProps {
@@ -42,7 +42,7 @@ const NoteList: FunctionComponent<IProps> = ({
 };
 
 const mapStateToProps = (state: IAppState) => {
-    const notes: Note[] = getNotesSelector(state);
+    const notes: Note[] = getMatchingNotes(state);
     const selectedNote = getSelectedNote(state);
     return {
         selectedNote,

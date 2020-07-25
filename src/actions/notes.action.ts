@@ -9,6 +9,7 @@ export enum NotesAction {
     SELECT_NOTE = 'SELECT_NOTE',
     UPDATE_NOTE = 'UPDATE_NOTE',
     REMOVE_NOTE = 'REMOVE_NOTE',
+    SEARCH_NOTE = 'SEARCH_NOTE',
 }
 
 export const addNoteSuccess = (note: Note): AnyAction => {
@@ -83,6 +84,15 @@ export const selectNote = (noteId: number): AnyAction => {
         type: NotesAction.SELECT_NOTE,
         payload: {
             noteId,
+        },
+    };
+};
+
+export const searchNote = (searchTerm: string): AnyAction => {
+    return {
+        type: NotesAction.SEARCH_NOTE,
+        payload: {
+            searchTerm,
         },
     };
 };

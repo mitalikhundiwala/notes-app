@@ -3,10 +3,12 @@ import { NotesAction } from '../actions/notes.action';
 
 export interface IState {
     selectedNoteId: number | null;
+    searchTerm: string | null;
 }
 
 const defaultState: IState = {
     selectedNoteId: null,
+    searchTerm: null,
 };
 
 export default (state: IState = defaultState, action: AnyAction): IState => {
@@ -20,6 +22,12 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
             return {
                 ...state,
                 selectedNoteId: null,
+            };
+        }
+        case NotesAction.SEARCH_NOTE: {
+            return {
+                ...state,
+                searchTerm: action.payload.searchTerm,
             };
         }
         default:
