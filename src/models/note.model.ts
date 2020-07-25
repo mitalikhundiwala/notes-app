@@ -1,11 +1,15 @@
 export default class Note {
     noteId: number;
     title: string;
-    description: string;
+    detail: string;
+    tags: string[];
+    lastUpdatedOn: Date;
 
     constructor(data: any) {
         this.noteId = data.noteId;
         this.title = data.title;
-        this.description = data.description;
+        this.detail = data.detail;
+        this.tags = data.tags;
+        this.lastUpdatedOn = data.lastUpdatedOn;
     }
 }

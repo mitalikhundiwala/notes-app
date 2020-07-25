@@ -8,6 +8,43 @@ const defaultState: IState = {};
 
 export default (state: IState = defaultState, action: AnyAction): IState => {
     switch (action.type) {
+        case NotesAction.ADD_NOTE: {
+            const note: Note = action.payload;
+            const newSlice = {
+                [note.noteId]: note,
+            };
+
+            return {
+                ...state,
+                ...newSlice,
+            };
+        }
+        case NotesAction.UPDATE_NOTE: {
+            const note: Note = action.payload;
+
+            const updatedSlice = {
+                [note.noteId]: {
+                    ...state[action.payload.noteId],
+                    title: action.payload.title,
+                    detail: action.payload.detail,
+                    tags: action.payload.tags,
+                    lastUpdatedOn: action.payload.lastUpdatedOn,
+                },
+            };
+
+            return {
+                ...state,
+                ...updatedSlice,
+            };
+        }
+        case NotesAction.REMOVE_NOTE: {
+            const payload: { noteId: number } = action.payload;
+            const notes = {
+                ...state,
+            };
+            delete notes[payload.noteId];
+            return notes;
+        }
         default:
             return state;
     }
