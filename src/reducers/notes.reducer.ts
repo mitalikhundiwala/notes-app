@@ -10,7 +10,6 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
     switch (action.type) {
         case NotesAction.ADD_NOTE: {
             const note: Note = action.payload;
-
             const newSlice = {
                 [note.noteId]: note,
             };
@@ -28,6 +27,7 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
                     ...state[action.payload.noteId],
                     title: action.payload.title,
                     detail: action.payload.detail,
+                    tags: action.payload.tags,
                 },
             };
 

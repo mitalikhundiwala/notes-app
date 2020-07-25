@@ -6,9 +6,11 @@ import { addNote } from '../actions/notes.action';
 import { AppThunkDispatch, IAppState } from '../store';
 import { connect } from 'react-redux';
 import Note from '../models/note.model';
+import { getAvailableTags } from '../selectors/notes.selector';
 
 interface IOwnProps {
-    addNote: (title: string, detail: string) => Promise<Note>;
+    addNote: (title: string, detail: string, tags: string[]) => Promise<Note>;
+    tags: string[];
 }
 
 interface IProps extends IOwnProps {
@@ -20,6 +22,7 @@ const CreateNote: FunctionComponent<IProps> = ({
     addNote,
     onCreate,
     onCancel,
+    tags,
 }) => {
     return (
         <Box p={2}>
@@ -27,6 +30,7 @@ const CreateNote: FunctionComponent<IProps> = ({
                 initialValues={{
                     title: '',
                     detail: '',
+                    tags: [],
                 }}
                 validate={values => {
                     const errors: FormikErrors<IFormValues> = {};
@@ -39,23 +43,36 @@ const CreateNote: FunctionComponent<IProps> = ({
                     actions.setSubmitting(true);
                     const title = values.title?.trim();
                     const detail = values.detail?.trim();
-                    await addNote(title, detail);
+                    const tags = values.tags;
+                    await addNote(title, detail, tags);
                     actions.setSubmitting(false);
                     onCreate();
                 }}
             >
-                {props => <NoteEditor {...props} onCancel={onCancel} />}
+                {props => (
+                    <NoteEditor
+                        {...props}
+                        onCancel={onCancel}
+                        existingTags={tags}
+                    />
+                )}
             </Formik>
         </Box>
     );
 };
 
+const mapStateToProps = (state: IAppState) => {
+    return {
+        tags: getAvailableTags(state),
+    };
+};
+
 const mapDispatchToProps = (dispatch: AppThunkDispatch) => {
     return {
-        addNote: (title: string, detail: string) => {
-            return dispatch(addNote(title, detail));
+        addNote: (title: string, detail: string, tags: string[]) => {
+            return dispatch(addNote(title, detail, tags));
         },
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(CreateNote);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateNote);

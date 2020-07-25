@@ -22,10 +22,11 @@ export const addNoteSuccess = (note: Note): AnyAction => {
 
 export const addNote = (
     title: string,
-    detail: string
+    detail: string,
+    tags: string[]
 ): ThunkAction<Promise<Note>, IAppState, undefined, AnyAction> => {
     return async (dispatch: Dispatch) => {
-        const note = await NoteService.addNote(title, detail);
+        const note = await NoteService.addNote(title, detail, tags);
         dispatch(addNoteSuccess(note));
         return note;
     };
@@ -43,10 +44,11 @@ export const updateNoteSuccess = (note: Note): AnyAction => {
 export const updateNote = (
     noteId: number,
     title: string,
-    detail: string
+    detail: string,
+    tags: string[]
 ): ThunkAction<Promise<Note>, IAppState, undefined, AnyAction> => {
     return async (dispatch: Dispatch) => {
-        const note = await NoteService.updateNote(noteId, title, detail);
+        const note = await NoteService.updateNote(noteId, title, detail, tags);
         dispatch(updateNoteSuccess(note));
         return note;
     };
