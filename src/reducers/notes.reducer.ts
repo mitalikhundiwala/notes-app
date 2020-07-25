@@ -28,6 +28,7 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
                     title: action.payload.title,
                     detail: action.payload.detail,
                     tags: action.payload.tags,
+                    lastUpdatedOn: action.payload.lastUpdatedOn,
                 },
             };
 

@@ -27,7 +27,13 @@ export const addNote = (
     tags: string[]
 ): ThunkAction<Promise<Note>, IAppState, undefined, AnyAction> => {
     return async (dispatch: Dispatch) => {
-        const note = await NoteService.addNote(title, detail, tags);
+        const lastUpdatedOn = new Date();
+        const note = await NoteService.addNote(
+            title,
+            detail,
+            tags,
+            lastUpdatedOn
+        );
         dispatch(addNoteSuccess(note));
         return note;
     };
@@ -49,7 +55,14 @@ export const updateNote = (
     tags: string[]
 ): ThunkAction<Promise<Note>, IAppState, undefined, AnyAction> => {
     return async (dispatch: Dispatch) => {
-        const note = await NoteService.updateNote(noteId, title, detail, tags);
+        const lastUpdatedOn = new Date();
+        const note = await NoteService.updateNote(
+            noteId,
+            title,
+            detail,
+            tags,
+            lastUpdatedOn
+        );
         dispatch(updateNoteSuccess(note));
         return note;
     };

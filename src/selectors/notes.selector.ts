@@ -7,9 +7,13 @@ const getSelectedNoteId = (state: IAppState) => state.ui.selectedNoteId;
 const getSearchTerm = (state: IAppState) => state.ui.searchTerm;
 
 export const getNotesSelector = createSelector([getAllNotes], notes => {
-    return Object.values(notes).map(note => {
-        return notes[note.noteId];
-    });
+    return Object.values(notes)
+        .map(note => {
+            return notes[note.noteId];
+        })
+        .sort((a, b) => {
+            return a.lastUpdatedOn < b.lastUpdatedOn ? 1 : -1;
+        });
 });
 
 export const getMatchingNotes = createSelector(
