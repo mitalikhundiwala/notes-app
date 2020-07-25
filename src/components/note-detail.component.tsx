@@ -9,6 +9,11 @@ import {
     Box,
     Card,
     Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
 } from '@material-ui/core';
 import { IAppState, AppThunkDispatch } from '../store';
 import { getSelectedNote } from '../selectors/notes.selector';
@@ -49,6 +54,17 @@ const NoteDetail: FunctionComponent<IProps> = ({
     const onToggle = useCallback(() => {
         return;
     }, []);
+
+    const [isOpenDialog, setIsDialogOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setIsDialogOpen(true);
+    };
+
+    const handleClose = () => {
+        setIsDialogOpen(false);
+    };
+
     return (
         <Card variant="outlined">
             <Box p={2}>
@@ -57,10 +73,44 @@ const NoteDetail: FunctionComponent<IProps> = ({
                         <Button
                             size="small"
                             color="secondary"
-                            onClick={() => removeNote(selectedNote.noteId)}
+                            onClick={() => handleClickOpen()}
                         >
                             Delete
                         </Button>
+                        <Dialog
+                            open={isOpenDialog}
+                            onClose={handleClose}
+                            aria-labelledby="draggable-dialog-title"
+                        >
+                            <DialogTitle
+                                style={{ cursor: 'move' }}
+                                id="draggable-dialog-title"
+                            >
+                                Confirmation
+                            </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    Are you sure you want to delete?
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button
+                                    autoFocus
+                                    onClick={handleClose}
+                                    color="primary"
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        removeNote(selectedNote.noteId);
+                                    }}
+                                    color="primary"
+                                >
+                                    Delete
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
                     </Box>
                     <Box ml={2}>
                         <Button
