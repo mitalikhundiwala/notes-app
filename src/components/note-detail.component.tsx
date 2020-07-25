@@ -2,14 +2,24 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
 import Note from '../models/note.model';
 import { connect } from 'react-redux';
-import { Typography, SwipeableDrawer, Chip, Box } from '@material-ui/core';
-import { Grid, IconButton } from '@material-ui/core';
-import Create from '@material-ui/icons/Create';
-import Delete from '@material-ui/icons/Delete';
+import {
+    Typography,
+    SwipeableDrawer,
+    Chip,
+    Box,
+    Card,
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+} from '@material-ui/core';
 import { IAppState, AppThunkDispatch } from '../store';
 import { getSelectedNote } from '../selectors/notes.selector';
 import UpdateNote from '../components/note-update.component';
 import { removeNote } from '../actions/notes.action';
+import format from 'date-fns/format';
 
 interface IProps {
     selectedNote: Note;
@@ -44,59 +54,111 @@ const NoteDetail: FunctionComponent<IProps> = ({
     const onToggle = useCallback(() => {
         return;
     }, []);
+
+    const [isOpenDialog, setIsDialogOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setIsDialogOpen(true);
+    };
+
+    const handleClose = () => {
+        setIsDialogOpen(false);
+    };
+
     return (
-        <>
-            <Grid container>
-                <Grid item sm={6}>
-                    <IconButton
-                        aria-label="Edit Note"
-                        aria-controls="primary-search-account-menu"
-                        aria-haspopup="true"
-                        color="inherit"
-                        onClick={toggleDrawer(true)}
-                    >
-                        <Create />
-                    </IconButton>
-                </Grid>
-                <Grid item sm={6}>
-                    <IconButton
-                        aria-label="Delete Note"
-                        aria-controls="primary-search-account-menu"
-                        aria-haspopup="true"
-                        color="inherit"
-                        onClick={() => removeNote(selectedNote.noteId)}
-                    >
-                        <Delete />
-                    </IconButton>
-                </Grid>
-            </Grid>
-            <Typography variant="h5" gutterBottom>
-                {selectedNote.title}
-            </Typography>
-
-            {selectedNote.tags.map(tag => (
-                <Box key={tag} display="inline-block" marginRight={1}>
-                    <Chip label={tag} />
+        <Card variant="outlined">
+            <Box p={2}>
+                <Box display="flex" justifyContent="flex-end" mb={2}>
+                    <Box ml={2}>
+                        <Button
+                            size="small"
+                            color="secondary"
+                            onClick={() => handleClickOpen()}
+                        >
+                            Delete
+                        </Button>
+                        <Dialog
+                            open={isOpenDialog}
+                            onClose={handleClose}
+                            aria-labelledby="draggable-dialog-title"
+                        >
+                            <DialogTitle
+                                style={{ cursor: 'move' }}
+                                id="draggable-dialog-title"
+                            >
+                                Confirmation
+                            </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    Are you sure you want to delete?
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button
+                                    autoFocus
+                                    onClick={handleClose}
+                                    color="primary"
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        removeNote(selectedNote.noteId);
+                                    }}
+                                    color="primary"
+                                >
+                                    Delete
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </Box>
+                    <Box ml={2}>
+                        <Button
+                            size="small"
+                            color="primary"
+                            onClick={toggleDrawer(true)}
+                        >
+                            Edit
+                        </Button>
+                    </Box>
                 </Box>
-            ))}
-
-            <Typography variant="body2" gutterBottom>
-                {selectedNote.detail}
-            </Typography>
-
-            <SwipeableDrawer
-                anchor="right"
-                open={isOpen}
-                onClose={onToggle}
-                onOpen={onToggle}
-            >
-                <UpdateNote
-                    note={selectedNote}
-                    onCancel={closeDrawer}
-                    onCreate={closeDrawer}
-                ></UpdateNote>
-            </SwipeableDrawer>
-        </>
+                <Box mb={1}>
+                    <Typography variant="h5" gutterBottom>
+                        {selectedNote.title}
+                    </Typography>
+                </Box>
+                <Box mb={2}>
+                    <Typography variant="caption" gutterBottom>
+                        Last Updated On:{' '}
+                        {format(selectedNote.lastUpdatedOn, 'Pp')}
+                    </Typography>
+                </Box>
+                <Box mb={2}>
+                    {selectedNote.tags.map(tag => (
+                        <Box key={tag} display="inline-block" marginRight={1}>
+                            <Chip label={tag} />
+                        </Box>
+                    ))}
+                </Box>
+                <Box mb={2}>
+                    <Typography component="pre" variant="body2" gutterBottom>
+                        {selectedNote.detail}
+                    </Typography>
+                </Box>
+                <SwipeableDrawer
+                    anchor="right"
+                    open={isOpen}
+                    onClose={onToggle}
+                    onOpen={onToggle}
+                >
+                    <UpdateNote
+                        note={selectedNote}
+                        onCancel={closeDrawer}
+                        onCreate={closeDrawer}
+                    ></UpdateNote>
+                </SwipeableDrawer>
+            </Box>
+        </Card>
     );
 };
 
