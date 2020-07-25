@@ -2,11 +2,11 @@ import { createSelector } from 'reselect';
 import { IAppState } from '../store';
 import Note from '../models/note.model';
 
-const getAllNotes = (state: IAppState) => state.notes;
+const getNotes = (state: IAppState) => state.notes;
 const getSelectedNoteId = (state: IAppState) => state.ui.selectedNoteId;
 const getSearchTerm = (state: IAppState) => state.ui.searchTerm;
 
-export const getNotesSelector = createSelector([getAllNotes], notes => {
+export const getAllNotes = createSelector([getNotes], notes => {
     return Object.values(notes)
         .map(note => {
             return notes[note.noteId];
@@ -17,7 +17,7 @@ export const getNotesSelector = createSelector([getAllNotes], notes => {
 });
 
 export const getMatchingNotes = createSelector(
-    [getNotesSelector, getSearchTerm],
+    [getAllNotes, getSearchTerm],
     (notes, searchTerm) => {
         const filteredNotes = notes.filter(note => {
             const searchRegEx = new RegExp(`${searchTerm}`, 'i');
@@ -35,18 +35,36 @@ export const getMatchingNotes = createSelector(
 );
 
 export const getSelectedNote = createSelector(
-    [getAllNotes, getSelectedNoteId],
+    [getNotes, getSelectedNoteId],
     (notes, selectedNoteId) => {
         return selectedNoteId ? notes[selectedNoteId] : null ?? null;
     }
 );
 
-export const getAvailableTags = createSelector([getAllNotes], notes => {
-    return Object.values(notes)
+export const getAvailableTags = createSelector([getNotes], notes => {
+    const allTags = Object.values(notes)
         .map((note: Note) => {
             return note.tags ?? [];
         })
-        .reduce(function (a, b) {
+        .reduce((a, b) => {
             return a.concat(b);
-        }, []);
+        }, [])
+        .sort((a, b) => {
+            return a > b ? 1 : -1;
+        });
+    return [...new Set(allTags)];
 });
+
+export const getTagsWithNoteCount = createSelector(
+    [getAvailableTags, getAllNotes],
+    (tags, notes) => {
+        const tagsWithNoteCount = tags.map((tag: string) => {
+            const notesWithTag = notes.filter((note: Note) => {
+                return note.tags?.includes(tag);
+            });
+            return [tag, notesWithTag.length];
+        });
+
+        return Object.fromEntries(tagsWithNoteCount);
+    }
+);

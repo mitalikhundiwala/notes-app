@@ -2,10 +2,14 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
 import Note from '../models/note.model';
 import { connect } from 'react-redux';
-import { Typography, SwipeableDrawer, Chip, Box } from '@material-ui/core';
-import { Grid, IconButton } from '@material-ui/core';
-import Create from '@material-ui/icons/Create';
-import Delete from '@material-ui/icons/Delete';
+import {
+    Typography,
+    SwipeableDrawer,
+    Chip,
+    Box,
+    Card,
+    Button,
+} from '@material-ui/core';
 import { IAppState, AppThunkDispatch } from '../store';
 import { getSelectedNote } from '../selectors/notes.selector';
 import UpdateNote from '../components/note-update.component';
@@ -46,66 +50,65 @@ const NoteDetail: FunctionComponent<IProps> = ({
         return;
     }, []);
     return (
-        <Box p={2}>
-            <Box display="flex" justifyContent="flex-end" mb={2}>
-                <Box ml={2}>
-                    <IconButton
-                        aria-label="Edit Note"
-                        aria-controls="primary-search-account-menu"
-                        aria-haspopup="true"
-                        color="inherit"
-                        onClick={toggleDrawer(true)}
-                    >
-                        <Create />
-                    </IconButton>
-                </Box>
-                <Box ml={2}>
-                    <IconButton
-                        aria-label="Delete Note"
-                        aria-controls="primary-search-account-menu"
-                        aria-haspopup="true"
-                        color="inherit"
-                        onClick={() => removeNote(selectedNote.noteId)}
-                    >
-                        <Delete />
-                    </IconButton>
-                </Box>
-            </Box>
-            <Box mb={1}>
-                <Typography variant="h5" gutterBottom>
-                    {selectedNote.title}
-                </Typography>
-            </Box>
-            <Box mb={2}>
-                <Typography variant="caption" gutterBottom>
-                    Last Updated On: {format(selectedNote.lastUpdatedOn, 'Pp')}
-                </Typography>
-            </Box>
-            <Box mb={2}>
-                {selectedNote.tags.map(tag => (
-                    <Box key={tag} display="inline-block" marginRight={1}>
-                        <Chip label={tag} />
+        <Card variant="outlined">
+            <Box p={2}>
+                <Box display="flex" justifyContent="flex-end" mb={2}>
+                    <Box ml={2}>
+                        <Button
+                            size="small"
+                            color="secondary"
+                            onClick={() => removeNote(selectedNote.noteId)}
+                        >
+                            Delete
+                        </Button>
                     </Box>
-                ))}
+                    <Box ml={2}>
+                        <Button
+                            size="small"
+                            color="primary"
+                            onClick={toggleDrawer(true)}
+                        >
+                            Edit
+                        </Button>
+                    </Box>
+                </Box>
+                <Box mb={1}>
+                    <Typography variant="h5" gutterBottom>
+                        {selectedNote.title}
+                    </Typography>
+                </Box>
+                <Box mb={2}>
+                    <Typography variant="caption" gutterBottom>
+                        Last Updated On:{' '}
+                        {format(selectedNote.lastUpdatedOn, 'Pp')}
+                    </Typography>
+                </Box>
+                <Box mb={2}>
+                    {selectedNote.tags.map(tag => (
+                        <Box key={tag} display="inline-block" marginRight={1}>
+                            <Chip label={tag} />
+                        </Box>
+                    ))}
+                </Box>
+                <Box mb={2}>
+                    <Typography component="pre" variant="body2" gutterBottom>
+                        {selectedNote.detail}
+                    </Typography>
+                </Box>
+                <SwipeableDrawer
+                    anchor="right"
+                    open={isOpen}
+                    onClose={onToggle}
+                    onOpen={onToggle}
+                >
+                    <UpdateNote
+                        note={selectedNote}
+                        onCancel={closeDrawer}
+                        onCreate={closeDrawer}
+                    ></UpdateNote>
+                </SwipeableDrawer>
             </Box>
-            <Box mb={2}>
-                <Typography variant="body2" gutterBottom>
-                    {selectedNote.detail}
-                </Typography>
-            </Box>
-            <SwipeableDrawer
-                anchor="right"
-                open={isOpen}
-                onClose={onToggle}
-                onOpen={onToggle}
-            >
-                <UpdateNote
-                    note={selectedNote}
-                    onCancel={closeDrawer}
-                    onCreate={closeDrawer}
-                ></UpdateNote>
-            </SwipeableDrawer>
-        </Box>
+        </Card>
     );
 };
 
