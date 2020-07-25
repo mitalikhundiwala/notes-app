@@ -5,7 +5,8 @@ class NoteService {
     static async addNote(
         title: string,
         detail: string,
-        tags: string[]
+        tags: string[],
+        lastUpdatedOn: Date
     ): Promise<Note> {
         await delay(1000);
         const noteId = new Date().getTime();
@@ -15,6 +16,7 @@ class NoteService {
             title,
             detail,
             tags,
+            lastUpdatedOn,
         });
     }
 
@@ -22,15 +24,16 @@ class NoteService {
         noteId: number,
         title: string,
         detail: string,
-        tags: string[]
+        tags: string[],
+        lastUpdatedOn: Date
     ): Promise<Note> {
         await delay(1000);
-
         return {
             noteId,
             title,
             detail,
             tags,
+            lastUpdatedOn,
         };
     }
 

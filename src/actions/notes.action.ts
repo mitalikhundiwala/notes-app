@@ -9,6 +9,7 @@ export enum NotesAction {
     SELECT_NOTE = 'SELECT_NOTE',
     UPDATE_NOTE = 'UPDATE_NOTE',
     REMOVE_NOTE = 'REMOVE_NOTE',
+    SEARCH_NOTE = 'SEARCH_NOTE',
 }
 
 export const addNoteSuccess = (note: Note): AnyAction => {
@@ -26,7 +27,13 @@ export const addNote = (
     tags: string[]
 ): ThunkAction<Promise<Note>, IAppState, undefined, AnyAction> => {
     return async (dispatch: Dispatch) => {
-        const note = await NoteService.addNote(title, detail, tags);
+        const lastUpdatedOn = new Date();
+        const note = await NoteService.addNote(
+            title,
+            detail,
+            tags,
+            lastUpdatedOn
+        );
         dispatch(addNoteSuccess(note));
         return note;
     };
@@ -48,7 +55,14 @@ export const updateNote = (
     tags: string[]
 ): ThunkAction<Promise<Note>, IAppState, undefined, AnyAction> => {
     return async (dispatch: Dispatch) => {
-        const note = await NoteService.updateNote(noteId, title, detail, tags);
+        const lastUpdatedOn = new Date();
+        const note = await NoteService.updateNote(
+            noteId,
+            title,
+            detail,
+            tags,
+            lastUpdatedOn
+        );
         dispatch(updateNoteSuccess(note));
         return note;
     };
@@ -83,6 +97,15 @@ export const selectNote = (noteId: number): AnyAction => {
         type: NotesAction.SELECT_NOTE,
         payload: {
             noteId,
+        },
+    };
+};
+
+export const searchNote = (searchTerm: string): AnyAction => {
+    return {
+        type: NotesAction.SEARCH_NOTE,
+        payload: {
+            searchTerm,
         },
     };
 };
