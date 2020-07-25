@@ -7,8 +7,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Note from '../models/note.model';
 import { connect } from 'react-redux';
 import { IAppState, AppThunkDispatch } from '../store';
-import { getNotesSelector, getSelectedNote, getMatchingNotes } from '../selectors/notes.selector';
+import {
+    getNotesSelector,
+    getSelectedNote,
+    getMatchingNotes,
+} from '../selectors/notes.selector';
 import { selectNote } from '../actions/notes.action';
+import { Typography } from '@material-ui/core';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 
 interface IProps {
     notes: Note[];
@@ -32,7 +38,23 @@ const NoteList: FunctionComponent<IProps> = ({
                     >
                         <ListItemText
                             primary={note.title}
-                            secondary={note.detail}
+                            // secondary={note.detail.substr(0, 100)}
+                            secondary={
+                                <>
+                                    <Typography
+                                        component="span"
+                                        variant="body2"
+                                        style={{ display: 'inline' }}
+                                        color="textPrimary"
+                                    >
+                                        {formatDistanceToNow(
+                                            note.lastUpdatedOn,
+                                            { addSuffix: true }
+                                        )}
+                                    </Typography>{' '}
+                                    {note.detail.substr(0, 40)}
+                                </>
+                            }
                         ></ListItemText>
                     </ListItem>
                 );

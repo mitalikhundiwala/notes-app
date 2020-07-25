@@ -10,6 +10,7 @@ import { IAppState, AppThunkDispatch } from '../store';
 import { getSelectedNote } from '../selectors/notes.selector';
 import UpdateNote from '../components/note-update.component';
 import { removeNote } from '../actions/notes.action';
+import format from 'date-fns/format';
 
 interface IProps {
     selectedNote: Note;
@@ -45,9 +46,9 @@ const NoteDetail: FunctionComponent<IProps> = ({
         return;
     }, []);
     return (
-        <>
-            <Grid container>
-                <Grid item sm={6}>
+        <Box p={2}>
+            <Box display="flex" justifyContent="flex-end" mb={2}>
+                <Box ml={2}>
                     <IconButton
                         aria-label="Edit Note"
                         aria-controls="primary-search-account-menu"
@@ -57,8 +58,8 @@ const NoteDetail: FunctionComponent<IProps> = ({
                     >
                         <Create />
                     </IconButton>
-                </Grid>
-                <Grid item sm={6}>
+                </Box>
+                <Box ml={2}>
                     <IconButton
                         aria-label="Delete Note"
                         aria-controls="primary-search-account-menu"
@@ -68,22 +69,30 @@ const NoteDetail: FunctionComponent<IProps> = ({
                     >
                         <Delete />
                     </IconButton>
-                </Grid>
-            </Grid>
-            <Typography variant="h5" gutterBottom>
-                {selectedNote.title}
-            </Typography>
-
-            {selectedNote.tags.map(tag => (
-                <Box key={tag} display="inline-block" marginRight={1}>
-                    <Chip label={tag} />
                 </Box>
-            ))}
-
-            <Typography variant="body2" gutterBottom>
-                {selectedNote.detail}
-            </Typography>
-
+            </Box>
+            <Box mb={1}>
+                <Typography variant="h5" gutterBottom>
+                    {selectedNote.title}
+                </Typography>
+            </Box>
+            <Box mb={2}>
+                <Typography variant="caption" gutterBottom>
+                    Last Updated On: {format(selectedNote.lastUpdatedOn, 'Pp')}
+                </Typography>
+            </Box>
+            <Box mb={2}>
+                {selectedNote.tags.map(tag => (
+                    <Box key={tag} display="inline-block" marginRight={1}>
+                        <Chip label={tag} />
+                    </Box>
+                ))}
+            </Box>
+            <Box mb={2}>
+                <Typography variant="body2" gutterBottom>
+                    {selectedNote.detail}
+                </Typography>
+            </Box>
             <SwipeableDrawer
                 anchor="right"
                 open={isOpen}
@@ -96,7 +105,7 @@ const NoteDetail: FunctionComponent<IProps> = ({
                     onCreate={closeDrawer}
                 ></UpdateNote>
             </SwipeableDrawer>
-        </>
+        </Box>
     );
 };
 

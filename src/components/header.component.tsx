@@ -14,6 +14,8 @@ import {
     makeStyles,
     Theme,
     fade,
+    Button,
+    Box,
 } from '@material-ui/core';
 import { AppThunkDispatch } from '../store';
 import { searchNote } from '../actions/notes.action';
@@ -113,15 +115,14 @@ const Header: FunctionComponent<IProps> = ({ handleSearch }) => {
                             }}
                         />
                     </div>
-                    <IconButton
-                        aria-label="Add Note"
-                        aria-controls="primary-search-account-menu"
-                        aria-haspopup="true"
+                    <Box flexGrow={1} />
+                    <Button
                         color="inherit"
+                        startIcon={<PostAdd />}
                         onClick={toggleDrawer(true)}
                     >
-                        <PostAdd />
-                    </IconButton>
+                        Create
+                    </Button>
                 </Toolbar>
             </AppBar>
             <SwipeableDrawer
