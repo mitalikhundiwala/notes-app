@@ -141,7 +141,12 @@ const NoteDetail: FunctionComponent<IProps> = ({
                     ))}
                 </Box>
                 <Box mb={2}>
-                    <Typography component="pre" variant="body2" gutterBottom>
+                    <Typography
+                        style={{ whiteSpace: 'pre-wrap' }}
+                        component="p"
+                        variant="body2"
+                        gutterBottom
+                    >
                         {selectedNote.detail}
                     </Typography>
                 </Box>
