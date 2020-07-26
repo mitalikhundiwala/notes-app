@@ -19,7 +19,6 @@ interface IProps extends FormikProps<IFormValues> {
 const filter = createFilterOptions<string>();
 
 const NoteEditor: FunctionComponent<IProps> = props => {
-    console.log(props);
     return (
         <form noValidate onSubmit={props.handleSubmit}>
             <Grid container spacing={3}>
