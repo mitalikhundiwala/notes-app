@@ -29,7 +29,6 @@ export const getMatchingNotes = createSelector(
                     : true)
             );
         });
-        console.log(filteredNotes);
         return filteredNotes;
     }
 );
